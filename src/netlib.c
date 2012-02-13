@@ -2982,7 +2982,7 @@ dump_addrinfo(FILE *dumploc, struct addrinfo *info,
             temp->ai_addrlen);
     ai_addr = temp->ai_addr;
     if (ai_addr != NULL) {
-      int i;
+      unsigned int i;
       fprintf(dumploc,
               "\tsa_family: %s sadata:",
               inet_ftos(ai_addr->sa_family));
@@ -3979,7 +3979,7 @@ HIST_search_bucket(int *unit, int num, int *last, int *current, double scale){
 /* get percentile from histogram */
 int
 HIST_get_percentile(HIST h, const double percentile){
-  int num = (int) h->total * percentile;
+  int num = (int)( h->total * percentile);
   int last = 0;
   int current = 0;
   int result;
