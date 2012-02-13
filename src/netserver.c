@@ -113,7 +113,7 @@ char	netserver_id[]="\
 #endif
 
 #if !defined(HAVE_SETSID)
-#if HAVE_SYS_WAIT_H>
+#if HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
 #endif
@@ -966,6 +966,16 @@ process_requests()
 void
 spawn_child() {
 
+#if defined(WIN32)
+  BOOL b;
+  char *cmdline;
+  int cmdline_length;
+  int cmd_index;
+  PROCESS_INFORMATION pi;
+  STARTUPINFO si;
+  int i;
+#endif
+
   if (debug) {
     fprintf(where,
 	    "%s: enter\n",
@@ -1024,15 +1034,6 @@ spawn_child() {
   }
 
 #elif defined(WIN32)
-
-  BOOL b;
-  char *cmdline;
-  int cmdline_length;
-  int cmd_index;
-  PROCESS_INFORMATION pi;
-  STARTUPINFO si;
-  int i;
-	    
   /* create the cmdline array based on strlen(program) + 80 chars */
   cmdline_length = strlen(program) + 80;
   cmdline = malloc(cmdline_length + 1);  // +1 for trailing null
